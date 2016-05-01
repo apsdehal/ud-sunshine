@@ -26,4 +26,8 @@
     <string name="pref_general_location_title">Location</string>
     <string name="pref_general_location_key">location</string>
     <string name="pref_general_location_default_value">94043</string>
+    <string name="pref_unit_metric">metric</string>
+    <string name="pref_unit_imperial">imperial</string>
+    <string name="pref_unit_title">Temperature Units</string>
+    <string name="pref_unit_key">tempUnits</string>
 </resources>

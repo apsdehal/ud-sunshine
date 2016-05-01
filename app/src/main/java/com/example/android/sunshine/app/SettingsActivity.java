@@ -26,6 +26,7 @@ public class SettingsActivity extends PreferenceActivity
 
         addPreferencesFromResource(R.xml.pref_general);
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_general_location_key)));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_unit_key)));
     }
 
     /**
