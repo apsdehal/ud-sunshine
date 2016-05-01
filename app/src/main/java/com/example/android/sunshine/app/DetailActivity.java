@@ -20,11 +20,14 @@ package com.example.android.sunshine.app;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +58,7 @@ public class DetailActivity extends AppCompatActivity {
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -77,7 +81,11 @@ public class DetailActivity extends AppCompatActivity {
 
         private final String LOG_TAG = DetailFragment.class.getSimpleName();
 
+        private static final String FORECAST_SHARE_HASHTAG = " #SunshineApp";
+        private String forecastData;
+
         public DetailFragment() {
+            setHasOptionsMenu(true);
         }
 
         @Override
@@ -89,12 +97,33 @@ public class DetailActivity extends AppCompatActivity {
             Intent intent = getActivity().getIntent();
 
             if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
-                String forecastData = intent.getStringExtra(Intent.EXTRA_TEXT);
+                forecastData = intent.getStringExtra(Intent.EXTRA_TEXT);
                 ((TextView) rootView.findViewById(R.id.detail_text))
                 .setText(forecastData);
             }
 
             return rootView;
+        }
+
+        @Override
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflator) {
+            inflator.inflate(R.menu.detailfragment, menu);
+            MenuItem shareItem = menu.findItem(R.id.action_share);
+
+            ShareActionProvider mShareActionProvider =
+                    (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
+
+            if (mShareActionProvider != null) {
+                mShareActionProvider.setShareIntent(createShareForecastIntent());
+            }
+        }
+
+        private Intent createShareForecastIntent() {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, forecastData);
+            return shareIntent;
         }
     }
 }
